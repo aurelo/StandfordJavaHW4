@@ -24,16 +24,9 @@ public class Permutation {
 		}
 		
 		public char nextElement(){
-			char element;
-			if (isOnEnd()){
-				currentIndex = 0;
-				element = possibleLetters[currentIndex];
-			}
-			else {
-				currentIndex++;
-				element = possibleLetters[currentIndex];
-			}
-			return element;
+			currentIndex = isOnEnd() ? 0 : currentIndex + 1;
+			return possibleLetters[currentIndex];
+
 		}
 		
 		public boolean isOnEnd(){
@@ -155,24 +148,26 @@ public class Permutation {
 	 */
 	public static void main(String[] args) {
 		String originalString;
-		//Permutation perm_a = new Permutation(1, "86f7e437faa5a7fce15d1ddcb9eaeaea377667b8");
-		//originalString = perm_a.permute();
+		Permutation perm_a = new Permutation(1, "86f7e437faa5a7fce15d1ddcb9eaeaea377667b8");
+		originalString = perm_a.permute();
+		System.out.println("String with the same hash: "+ originalString);
 		
-		//Permutation perm_fm = new Permutation(2, "adeb6f2a18fe33af368d91b09587b68e3abcb9a7");
-		//originalString = perm_fm.permute();
+		Permutation perm_fm = new Permutation(2, "adeb6f2a18fe33af368d91b09587b68e3abcb9a7");
+		originalString = perm_fm.permute();
+		System.out.println("String with the same hash: "+ originalString);
 		
 		Permutation perm_fm_null = new Permutation(2, "adeb6f2a18fe33af368d91b09587b68e3abcb9a7", "a".toCharArray());
 		originalString = perm_fm_null.permute();
 		System.out.println("String with the same hash: "+ originalString);
 		
 		
-		//Permutation perm_xyz = new Permutation(3, "66b27417d37e024c46526c2f6d358a754fc552f3");
-		//originalString = perm_xyz.permute();
-		//System.out.println("String with the same hash: "+ originalString);
+		Permutation perm_xyz = new Permutation(3, "66b27417d37e024c46526c2f6d358a754fc552f3");
+		originalString = perm_xyz.permute();
+		System.out.println("String with the same hash: "+ originalString);
 		
-		//Permutation perm_xyz_null = new Permutation(3, "66b27417d37e024c46526c2f6d358a754fc552f3", "a".toCharArray());
-		//originalString = perm_xyz_null.permute();
-		//System.out.println("String with the same hash: "+ originalString);
+		Permutation perm_xyz_null = new Permutation(3, "66b27417d37e024c46526c2f6d358a754fc552f3", "a".toCharArray());
+		originalString = perm_xyz_null.permute();
+		System.out.println("String with the same hash: "+ originalString);
 	}
 
 }
