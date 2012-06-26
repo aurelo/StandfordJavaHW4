@@ -2,6 +2,7 @@ package hashCracker;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
 public class Cracker {
@@ -26,58 +27,37 @@ public class Cracker {
 	
 	public void createThreads(int count){
 		int threadCount = Math.min(count, MAX_THREADS);
+		int fromIndex = 0;
+		int toIndex = 0;
+		char[] firstLetterPossibleValues;
 		
 		for (int i = 0; i < threadCount; i++){
-			new Thread(new CrackerWorker(CHARS), "Thread"+i).start();
+			fromIndex = i * CHARS.length/threadCount;
+			toIndex = (i + 1)*CHARS.length/threadCount;
+			firstLetterPossibleValues = Arrays.copyOfRange(CHARS, fromIndex , toIndex);
+			new Thread(new CrackerWorker(firstLetterPossibleValues), "Thread"+i).start();
 		}
 	}		
 	
 	class CrackerWorker implements Runnable {
 		
 		private final char[] firstLetterWordsToCheck;
-		private StringBuilder currentWord;
-		//private int firstLetterStartIndex;
-		//private int firstLetterLastIndex;
-
+		private String wordWithTheSameHash;
 		
 		public CrackerWorker(char[] partToCheck) {
 			this.firstLetterWordsToCheck = partToCheck;
-			
-			// current word starts with first letter of applied part of CHARS string followed by first letter of CHARS string
-			this.currentWord = new StringBuilder(String.valueOf(firstLetterWordsToCheck[0]));
-			for (int i = 1; i < originalWordLength; i++){
-				this.currentWord.append(CHARS[0]);
-			}
-			
-			System.out.println("First word to check: "+currentWord);
 		}
 		
 		@Override
 		public void run() {
-		//	try{
-				int fromIndex = originalWordLength - 1;
-				
-				for (int i = fromIndex; i >= 0; i--){
-					System.out.println("i=>"+i);
-					
-					for(int j = 0; j < CHARS.length; j++){
-						System.out.println("Checking: "+Cracker.getHashValue(currentWord.toString()));
-						if (Cracker.getHashValue(currentWord.toString()).equals(hashedString)){
-							System.out.println("FOUND WORD WITH MATCHING HASH VALUE: "+currentWord);
-							break;
-						}
-						currentWord.setCharAt(i, CHARS[j]);
-						System.out.println("Next word to check: "+currentWord);
-					}
-					
-				}
-				
+			Permutation perm = new Permutation(originalWordLength, hashedString, firstLetterWordsToCheck);
+			wordWithTheSameHash = perm.permute();
+			
+			if (wordWithTheSameHash != null) System.out.println("WORD with the SAME HASH: "+ wordWithTheSameHash);
+			
+			System.out.println("Thread "+ Thread.currentThread().getName() + " done!");
 			stopLatch.countDown();	
 			}
-		//	catch (InterruptedException e) {
-		//		System.err.println(e.getLocalizedMessage());
-		//	}
-		//}
 	}
 	
 	
