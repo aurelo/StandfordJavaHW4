@@ -3,6 +3,24 @@ package hashCracker;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author zgudasic
+ * 
+ * Algoritham works by "turning" first letter until it reaches "end"
+ * after which first letter is returned to beginning and next letter is "turned up"
+ * Example: 2 letter word - both letters possible values a b c
+ *      1: aa
+ *      2: ba
+ *      3: ca
+ *      4: ab
+ *      5: bb
+ *      6: cb
+ *      7: ac
+ *      8: bc
+ *      9: cc
+ *
+ */
 public class Permutation {
 	
 	class PermutationElement {
